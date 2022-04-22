@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "strict": true,
+        "useDefineForClassFields": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "esnext", 
+            "esnext.asynciterable"
+        ],
+        "typeRoots": [ 
+            "node_modules/@types",
+        ],
+        "types": [],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@/generated": ["./prisma/generated/type-graphql/index.ts"],
+            "@/generated/*": ["./prisma/generated/type-graphql/*"],
+        }
+    },
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],
+}

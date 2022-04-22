@@ -1,0 +1,111 @@
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId()
+  name     String
+  /// @TypeGraphQL.omit(output: true)
+  password String
+
+  bookLists BookList[]
+  userTags  UserTag[]
+
+  @@unique([name])
+}
+
+model Author {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  books Book[] @relation(fields: [booksIDs], references: [id])
+
+  booksIDs String[] @db.ObjectId
+
+  @@unique([name])
+}
+
+model UserTag {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  user  User   @relation(fields: [userId], references: [id])
+  books Book[] @relation(fields: [booksIDs], references: [id])
+
+  booksIDs String[] @db.ObjectId
+  userId   String   @db.ObjectId
+
+  @@unique([name])
+}
+
+model Tag {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  books Book[] @relation(fields: [booksIDs], references: [id])
+
+  booksIDs String[] @db.ObjectId
+
+  @@unique([name])
+}
+
+model Book {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  publishedAt DateTime?
+  content     Text[]
+
+  authors   Author[]   @relation(fields: [authorIDs], references: [id])
+  bookLists BookList[] @relation(fields: [bookListIDs], references: [id])
+  tags      Tag[]      @relation(fields: [tagIDs], references: [id])
+  userTags  UserTag[]  @relation(fields: [userTagIDs], references: [id])
+
+  authorIDs   String[] @db.ObjectId
+  bookListIDs String[] @db.ObjectId
+  tagIDs      String[] @db.ObjectId
+  userTagIDs  String[] @db.ObjectId
+
+  @@unique([name])
+}
+
+model BookList {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  user  User   @relation(fields: [userID], references: [id])
+  books Book[] @relation(fields: [booksIDs], references: [id])
+
+  userID   String   @db.ObjectId
+  booksIDs String[] @db.ObjectId
+
+  @@unique([name])
+}
+
+enum BookElementType {
+  Heading
+  Text
+}
+
+enum AlignType {
+  Right
+  Middle
+  Left
+  Width
+}
+
+type Text {
+  type            BookElementType
+  content         String
+  align           AlignType?
+  firstLineIndent Int? // in milimeters
+}
