@@ -18,7 +18,7 @@ async function bootstrap() {
     const schema = await buildSchema({
         // resolvers: [HelloResolver],
         resolvers,
-        emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),
+        // emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),
         validate: false,
     });
 

@@ -25,15 +25,19 @@ services:
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
+  # see https://github.com/prisma/docs/issues/3040
   db:
-    container_name: book-shelf-backend-bd
-    image: mongo:latest
+    container_name: book-shelf-backend-db
+    image: 'bitnami/mongodb:latest'
     restart: unless-stopped
-    volumes:
-      - mongodb-data:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+      - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_USER=anyuser
+      - MONGODB_ROOT_PASSWORD=anypassword
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    volumes:
+      - 'mongodb-data:/bitnami/mongodb'
 
     # Add "forwardPorts": ["27017"] to **devcontainer.json** to forward MongoDB locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)

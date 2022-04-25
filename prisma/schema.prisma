@@ -1,3 +1,4 @@
+// see https://prisma.typegraphql.com/docs/basics/installation#additional-dependencies
 generator typegraphql {
   provider = "typegraphql-prisma"
   output   = "../prisma/generated/type-graphql"
@@ -30,6 +31,7 @@ model Author {
 
   books Book[] @relation(fields: [booksIDs], references: [id])
 
+  /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
 
   @@unique([name])
@@ -42,7 +44,9 @@ model UserTag {
   user  User   @relation(fields: [userId], references: [id])
   books Book[] @relation(fields: [booksIDs], references: [id])
 
+  /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
   userId   String   @db.ObjectId
 
   @@unique([name])
@@ -54,6 +58,7 @@ model Tag {
 
   books Book[] @relation(fields: [booksIDs], references: [id])
 
+  /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
 
   @@unique([name])
@@ -63,16 +68,21 @@ model Book {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   publishedAt DateTime?
-  content     Text[]
+  coverImage  String?
 
+  content   Text[]
   authors   Author[]   @relation(fields: [authorIDs], references: [id])
   bookLists BookList[] @relation(fields: [bookListIDs], references: [id])
   tags      Tag[]      @relation(fields: [tagIDs], references: [id])
   userTags  UserTag[]  @relation(fields: [userTagIDs], references: [id])
 
+  /// @TypeGraphQL.omit(output: true, input: true)
   authorIDs   String[] @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
   bookListIDs String[] @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
   tagIDs      String[] @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
   userTagIDs  String[] @db.ObjectId
 
   @@unique([name])
@@ -85,7 +95,9 @@ model BookList {
   user  User   @relation(fields: [userID], references: [id])
   books Book[] @relation(fields: [booksIDs], references: [id])
 
+  /// @TypeGraphQL.omit(output: true, input: true)
   userID   String   @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
 
   @@unique([name])
@@ -103,9 +115,15 @@ enum AlignType {
   Width
 }
 
-type Text {
+model Text {
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
   type            BookElementType
   content         String
   align           AlignType?
   firstLineIndent Int? // in milimeters
+
+  book Book @relation(fields: [bookId], references: [id])
+
+  /// @TypeGraphQL.omit(output: true, input: true)
+  bookId String @db.ObjectId
 }

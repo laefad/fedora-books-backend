@@ -15,7 +15,8 @@
 		"dbaeumer.vscode-eslint",
 		"mongodb.mongodb-vscode",
 		"Prisma.prisma",
-		"GraphQL.vscode-graphql"
+		"GraphQL.vscode-graphql",
+		"mhutchie.git-graph"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

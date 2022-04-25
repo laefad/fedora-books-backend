@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev:server": "ts-node src/index.ts",
+    "dev:bnr": "npm run prisma:generate && npm run prisma:schema && ts-node src/index.ts",
     "prisma:generate": "prisma generate",
     "prisma:seed": "ts-node --transpile-only ./prisma/seed.ts",
     "prisma:schema": "prisma db push --skip-generate"
