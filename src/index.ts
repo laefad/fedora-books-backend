@@ -1,8 +1,6 @@
 // Required for type-graphql
 import 'reflect-metadata';
 
-import path from "path";
-
 import { ApolloServer } from 'apollo-server';
 import { PrismaClient } from "@prisma/client";
 import { buildSchema } from 'type-graphql';
@@ -18,7 +16,6 @@ async function bootstrap() {
     const schema = await buildSchema({
         // resolvers: [HelloResolver],
         resolvers,
-        // emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),
         validate: false,
     });
 

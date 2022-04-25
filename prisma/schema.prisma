@@ -122,8 +122,8 @@ model Text {
   align           AlignType?
   firstLineIndent Int? // in milimeters
 
-  book Book @relation(fields: [bookId], references: [id])
+  book Book @relation(fields: [bookID], references: [id])
 
   /// @TypeGraphQL.omit(output: true, input: true)
-  bookId String @db.ObjectId
+  bookID String @db.ObjectId
 }
