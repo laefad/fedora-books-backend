@@ -1,16 +1,40 @@
-import type { Book, PrismaClient } from "@prisma/client";
-import { getFish, pickMany, random, randomDate } from "./util";
+import type { PrismaClient } from "@prisma/client";
+import { generateChapters } from "./chapter";
+import { generateWords, pickMany, random, randomDate } from "./util";
 
 interface GenerateBooksParams {
     booksAmount: number;
+    bookNameWords: {
+        length: {
+            min: number;
+            max: number;
+        };
+        amount: {
+            min: number;
+            max: number;
+        };
+    };
     paragraphs: {
-        min: number;
-        max: number;
+        amount: {
+            min: number;
+            max: number;
+        };
+        nameWords: {
+            length: {
+                min: number;
+                max: number;
+            };
+            amount: {
+                min: number;
+                max: number;
+            };
+        };
     };
     chapters: {
         min: number;
         max: number;
     };
+    maxNested: number;
     tagIDs: Array<string>;
     userTagIDs: Array<string>;
     authorIDs: Array<string>,
@@ -19,14 +43,10 @@ interface GenerateBooksParams {
   
 export const generateBooks = async ({
     booksAmount, 
-    paragraphs: {
-        min: minParagraphs,
-        max: maxParagraphs
-    },
-    chapters: {
-        min: minChapters,
-        max: maxChapters
-    },
+    bookNameWords,
+    paragraphs,
+    chapters,
+    maxNested,
     tagIDs,
     userTagIDs,
     authorIDs,
@@ -61,43 +81,27 @@ export const generateBooks = async ({
         }
     });
 
-    // TODO replace to text.ts
-  
-    const generateAndLinkContent = async ({id}: Book) => {
-        for (let i = 0, chapters = random(minChapters, maxChapters); i <= chapters; i++) {
-            const h = await prisma.text.create({
-                data: {
-                    content: `The ${i} chapter`,
-                    type: "Heading",
-                    book: {
-                        connect: {
-                            id
-                        }
-                    }
-                }
-            });
-            for (let j = 0, paragraphs = random(minParagraphs, maxParagraphs); j <= paragraphs; j++) {
-                const p = await prisma.text.create({
-                    data: {
-                        content: getFish(),
-                        type: "Text",
-                        book: {
-                            connect: {
-                                id
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    };
-
     const bookIDs: Array<string> = [];
   
     for (let i = 0; i <= booksAmount; i++) {
-        const book = await createBook(`Book ${i}`);
-        bookIDs.push(book.id);
-        await generateAndLinkContent(book);
+        console.log(`Creating book ${i}...`);
+        const { id } = await createBook(generateWords(bookNameWords));
+        bookIDs.push(id);
+        await generateChapters({
+            amount: random(chapters.min, chapters.max),
+            chapters,
+            paragraphs: paragraphs.amount,
+            nameWords: paragraphs.nameWords,
+            nested: {
+                level: {
+                    max: maxNested,
+                    current: 0
+                },
+                amount: chapters
+            },
+            bookId: id,
+            prisma
+        });
     }
 
     return bookIDs;

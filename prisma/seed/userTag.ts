@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { pick, random, randomString } from "./util";
+import { pick, generateWords } from "./util";
 
 interface GenerateUserTagsParams {
     amount: number;
@@ -13,10 +13,7 @@ interface GenerateUserTagsParams {
 
 export const generateUserTags = async ({
     amount,
-    length: {
-        min, 
-        max
-    },
+    length,
     userIDs,
     prisma
 }: GenerateUserTagsParams): Promise<string[]> => {
@@ -24,7 +21,7 @@ export const generateUserTags = async ({
     for (let i = 0; i <= amount; i++) {
         const { id } = await prisma.userTag.create({
             data: {
-                name: randomString(random(min, max)),
+                name: generateWords({length}),
                 user: {
                     connect: {
                       id: pick(userIDs)

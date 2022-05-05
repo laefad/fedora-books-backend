@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { random, randomString } from "./util";
+import { generateWords } from "./util";
 
 interface GenerateUsersParams {
     amount: number;
@@ -28,8 +28,8 @@ export const generateUsers = async ({
     for (let i = 0; i <= amount; i++) {
         const { id } = await prisma.user.create({
             data: {
-                name: randomString(random(name.min, name.max)),
-                password: randomString(random(password.min, password.max)),
+                name: generateWords({length: name}),
+                password: generateWords({length: password}),
             }
         });
         userIDs.push(id);

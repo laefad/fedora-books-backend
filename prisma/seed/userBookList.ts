@@ -1,11 +1,17 @@
 import type { PrismaClient } from "@prisma/client";
-import { pick, pickMany, random, randomString } from "./util";
+import { pick, pickMany, generateWords } from "./util";
 
 interface GenerateBookListsParams {
     amount: number;
-    length: {
-        min: number;
-        max: number;
+    nameWords: {
+        length: {
+            min: number;
+            max: number;
+        };
+        amount:  {
+            min: number;
+            max: number;
+        };
     };
     userIDs: Array<string>;
     bookIDs: Array<string>;
@@ -14,10 +20,7 @@ interface GenerateBookListsParams {
 
 export const generateBookLists = async ({
     amount,
-    length: {
-        min, 
-        max
-    },
+    nameWords,
     userIDs,
     bookIDs,
     prisma
@@ -26,7 +29,7 @@ export const generateBookLists = async ({
     for (let i = 0; i <= amount; i++) {
         const { id } = await prisma.bookList.create({
             data: {
-                name: randomString(random(min, max)),
+                name: generateWords(nameWords),
                 user: {
                     connect: {
                         id: pick(userIDs)

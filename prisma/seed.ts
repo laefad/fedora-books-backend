@@ -12,8 +12,9 @@ async function main() {
   await prisma.$connect();
 
   await prisma.tag.deleteMany({});
-  await prisma.text.deleteMany({});
   await prisma.userTag.deleteMany({});
+  await prisma.paragraph.deleteMany({});
+  await prisma.chapter.deleteMany({});
   await prisma.bookList.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.author.deleteMany({});
@@ -59,44 +60,57 @@ async function main() {
 
   const bookIDs = await generateBooks({
     booksAmount: 40,
+    bookNameWords: {
+      amount: {
+        min: 1,
+        max: 4
+      },
+      length: {
+        min: 4,
+        max: 10
+      }
+    },
     paragraphs: {
-      max: 10,
-      min: 4
+      amount: {
+        min: 3,
+        max: 20
+      },
+      nameWords: {
+        amount: {
+          min: 1,
+          max: 10
+        },
+        length: {
+          min: 1,
+          max: 14
+        }
+      },
     },
     chapters: {
-      max: 10,
+      max: 5,
       min: 1
     },
+    maxNested: 2,
     tagIDs,
     userTagIDs,
     authorIDs,
     prisma
   });
 
-  // TODO check
-  // ADD BOOKS TO USER TAGS
-  // work only in 1 side
-
-  // await prisma.userTag.update({
-  //   data: {
-  //     books: {
-  //       connect: [
-  //         {
-  //           id: book1.id
-  //         }
-  //       ]
-  //     }
-  //   },
-  //   where: {
-  //     id: user1Tag1.id
-  //   },
-  // });
-
   // USER BOOK LISTS 
 
   const bookListIDs = generateBookLists({
     amount: 5, 
-    length: { min: 5, max: 10 },
+    nameWords: {
+      amount: {
+        min: 2,
+        max: 4
+      },
+      length: {
+        min: 2,
+        max: 12
+      }
+    },
     userIDs,
     bookIDs,
     prisma

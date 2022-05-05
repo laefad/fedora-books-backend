@@ -70,7 +70,7 @@ model Book {
   publishedAt DateTime?
   coverImage  String?
 
-  content   Text[]
+  chapters  Chapter[]
   authors   Author[]   @relation(fields: [authorIDs], references: [id])
   bookLists BookList[] @relation(fields: [bookListIDs], references: [id])
   tags      Tag[]      @relation(fields: [tagIDs], references: [id])
@@ -103,11 +103,6 @@ model BookList {
   @@unique([name])
 }
 
-enum BookElementType {
-  Heading
-  Text
-}
-
 enum AlignType {
   Right
   Middle
@@ -115,15 +110,36 @@ enum AlignType {
   Width
 }
 
-model Text {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
-  type            BookElementType
+model Paragraph {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
   content         String
   align           AlignType?
   firstLineIndent Int? // in milimeters
 
-  book Book @relation(fields: [bookID], references: [id])
+  chapter Chapter @relation(fields: [chapterID], references: [id])
 
   /// @TypeGraphQL.omit(output: true, input: true)
-  bookID String @db.ObjectId
+  chapterID String @db.ObjectId
+}
+
+enum ChapterType {
+  Directory
+  Default
+}
+
+model Chapter {
+  id   String      @id @default(auto()) @map("_id") @db.ObjectId
+  type ChapterType
+  name String
+
+  book       Book        @relation(fields: [bookID], references: [id])
+  paragraphs Paragraph[]
+
+  nestedChapters Chapter[] @relation("nestedChapters")
+  topChapter     Chapter?  @relation("nestedChapters", fields: [topChapterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  /// @TypeGraphQL.omit(output: true, input: true)
+  topChapterId String? @db.ObjectId
+  /// @TypeGraphQL.omit(output: true, input: true)
+  bookID       String  @db.ObjectId
 }
