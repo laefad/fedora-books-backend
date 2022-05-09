@@ -10,22 +10,22 @@
     "prisma:seed": "ts-node --transpile-only ./prisma/seed.ts",
     "prisma:schema": "prisma db push --skip-generate"
   },
-  "author": "laefad",
+  "author": "laefad", 
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^3.12.0",
     "apollo-server": "^3.6.7",
     "class-validator": "^0.13.2",
     "graphql": "^15.8.0",
-    "lorem-ipsum": "^2.0.4",
     "reflect-metadata": "^0.1.13",
-    "rword": "^3.2.1",
     "type-graphql": "^1.1.1",
     "typegraphql-prisma": "^0.20.1",
     "typescript": "^4.6.3"
   },
   "devDependencies": {
+    "lorem-ipsum": "^2.0.4",
     "prisma": "^3.12.0",
+    "rword": "^3.2.1",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.14.1"
   }

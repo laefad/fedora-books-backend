@@ -1,7 +1,7 @@
 // Required for type-graphql
 import 'reflect-metadata';
 
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer, CorsOptions } from 'apollo-server';
 import { PrismaClient } from "@prisma/client";
 import { buildSchema } from 'type-graphql';
 
@@ -19,11 +19,18 @@ async function bootstrap() {
         validate: false,
     });
 
+    const freeCors: CorsOptions = {
+        allowedHeaders: '*',
+        methods: 'GET, POST',
+        origin: '*',
+    };
+
     const prisma = new PrismaClient();
     await prisma.$connect();
 
     const server = new ApolloServer({ 
         schema,
+        cors: freeCors,
         context: (): Context => ({ prisma }),
     });
     

@@ -26,8 +26,9 @@ model User {
 }
 
 model Author {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
 
   books Book[] @relation(fields: [booksIDs], references: [id])
 
@@ -38,8 +39,9 @@ model Author {
 }
 
 model UserTag {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
 
   user  User   @relation(fields: [userId], references: [id])
   books Book[] @relation(fields: [booksIDs], references: [id])
@@ -53,8 +55,9 @@ model UserTag {
 }
 
 model Tag {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
 
   books Book[] @relation(fields: [booksIDs], references: [id])
 
@@ -69,6 +72,7 @@ model Book {
   name        String
   publishedAt DateTime?
   coverImage  String?
+  description String?
 
   chapters  Chapter[]
   authors   Author[]   @relation(fields: [authorIDs], references: [id])
@@ -89,8 +93,9 @@ model Book {
 }
 
 model BookList {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
 
   user  User   @relation(fields: [userID], references: [id])
   books Book[] @relation(fields: [booksIDs], references: [id])
@@ -114,7 +119,7 @@ model Paragraph {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
   content         String
   align           AlignType?
-  firstLineIndent Int? // in milimeters
+  firstLineIndent Int? // in pixels
 
   chapter Chapter @relation(fields: [chapterID], references: [id])
 

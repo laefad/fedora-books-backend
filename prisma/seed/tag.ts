@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateWords } from "./util";
+import { generateWords, getFish } from "./util";
 
 interface GenerateTagsParams {
     amount: number;
@@ -20,6 +20,7 @@ export const generateTags = async ({
         const { id } = await prisma.tag.create({
             data: {
                 name: generateWords({length}),
+                description: getFish(),
             }
         });
         tagIDs.push(id);

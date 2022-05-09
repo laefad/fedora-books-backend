@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { pick, pickMany, generateWords } from "./util";
+import { pick, pickMany, generateWords, getFish } from "./util";
 
 interface GenerateBookListsParams {
     amount: number;
@@ -30,6 +30,7 @@ export const generateBookLists = async ({
         const { id } = await prisma.bookList.create({
             data: {
                 name: generateWords(nameWords),
+                description: getFish(),
                 user: {
                     connect: {
                         id: pick(userIDs)

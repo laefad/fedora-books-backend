@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { pick, generateWords } from "./util";
+import { pick, generateWords, getFish } from "./util";
 
 interface GenerateUserTagsParams {
     amount: number;
@@ -22,6 +22,7 @@ export const generateUserTags = async ({
         const { id } = await prisma.userTag.create({
             data: {
                 name: generateWords({length}),
+                description: getFish(),
                 user: {
                     connect: {
                       id: pick(userIDs)

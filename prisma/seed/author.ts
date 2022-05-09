@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateWords } from "./util";
+import { generateWords, getFish } from "./util";
 
 interface GenerateAuthorsParams {
     amount: number;
@@ -19,7 +19,8 @@ export const generateAuthors = async ({
     for (let i = 0; i <= amount; i++) {
         const { id } = await prisma.author.create({
             data: {
-                name: generateWords({length})
+                name: generateWords({length}),
+                description: getFish(),
             }
         });
         authorIDs.push(id);

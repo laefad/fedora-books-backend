@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import { generateChapters } from "./chapter";
-import { generateWords, pickMany, random, randomDate } from "./util";
+import { generateWords, getFish, pickMany, random, randomDate } from "./util";
 
 interface GenerateBooksParams {
     booksAmount: number;
@@ -57,6 +57,7 @@ export const generateBooks = async ({
         data: {
             name,
             publishedAt: randomDate(),
+            description: getFish(),
             tags: {
             connect: 
                 pickMany(tagIDs)
