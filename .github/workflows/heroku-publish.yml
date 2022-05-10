@@ -1,20 +1,33 @@
 name: Heroku publish
-
 on:
   push:
     branches:
     - master
-
 jobs:
   push-heroku:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - name: Generate resolvers
+        run: npm run prisma:generate
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+      - name: Sync database schema with application
+        run: npm run prisma:schema
+      - name: Build application
+        run: npm run webpack
+      - name: Change dir to dist
+        run: cd ./dist
+      - name: Create git rep
+        run: git init
       - name: Push 'dist' folder to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with: 
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-        env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          procfile: "web: node server.js"
