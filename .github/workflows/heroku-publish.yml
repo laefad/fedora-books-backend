@@ -29,3 +29,5 @@ jobs:
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           appdir: "dist"
+          procfile: "web: node server.js"
+          branch: master
