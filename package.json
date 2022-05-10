@@ -12,7 +12,8 @@
     "webpack:dev": "webpack --mode development --stats-error-details",
     "webpack:server": "webpack --mode development --watch",
     "seed": "node ./dist/seed.js",
-    "server": "node ./dist/server.js"
+    "server": "node ./dist/server.js",
+    "start": "npm run prisma:generate && npm run prisma:schema && npm run webpack && npm run server"
   },
   "author": "laefad",
   "license": "MIT",
