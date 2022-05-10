@@ -18,6 +18,8 @@ jobs:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Sync database schema with application
         run: npm run prisma:schema
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run webpack
       - name: Change dir to dist
@@ -31,3 +33,6 @@ jobs:
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           procfile: "web: node server.js"
+        env:
+          HD_DATABASE_URL: ${{secrets.DATABASE_URL}}
+
