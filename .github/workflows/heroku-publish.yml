@@ -25,7 +25,7 @@ jobs:
       - name: List current
         run: ls -la
       - name: Clean current
-        run: ls | grep -Ev "(dist|\.$|\.\.$)" | xargs rm -rf
+        run: rm -rf !(dist)
       - name: List rest
         run: ls -la
       - name: Create Procfile
