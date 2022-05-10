@@ -22,12 +22,15 @@ jobs:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run webpack
+      - name: List parent of parent
+        working-directory: ./../..
+        run: ls -la
       - name: List parent
         working-directory: ./..
         run: ls -la
-      - name: Clean parent
-        working-directory: ./..
-        run: ls | grep -v '(fedora-books-backend|dist)' | xargs rm -rf
+      # - name: Clean parent
+      #   working-directory: ./..
+      #   run: ls | grep -v '(fedora-books-backend|dist)' | xargs rm -rf
       - name: List current
         run: ls -la
       - name: Clean current
