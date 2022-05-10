@@ -22,12 +22,12 @@ jobs:
         run: npm run prisma:schema
       - name: Build application
         run: npm run webpack
+      - run: ls -la .
       - name: Push 'dist' folder to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with: 
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-#           appdir: "dist"
+          appdir: "dist"
 #           procfile: "web: node server.js"
-#           branch: master
