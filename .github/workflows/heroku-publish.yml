@@ -22,31 +22,23 @@ jobs:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run webpack
-      - name: List parent of parent
-        working-directory: ./../..
-        run: ls -la
-      - name: List parent
-        working-directory: ./..
-        run: ls -la
-      # - name: Clean parent
-      #   working-directory: ./..
-      #   run: ls | grep -v '(fedora-books-backend|dist)' | xargs rm -rf
       - name: List current
         run: ls -la
       - name: Clean current
         run: ls | grep -v dist | xargs rm -rf
       - name: List rest
-        working-directory: ./..
         run: ls -la
+      - name: Create Procfile
+        run: |
+          touch Procfile 
+          echo "web: node dist/server.js" >> Procfile
       - name: Init git
-        working-directory: ./..
         run: git init
-      - name: Push 'dist' folder to Heroku
+      - name: Push builded app to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with: 
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          procfile: "web: node dist/server.js"
         env:
           HD_DATABASE_URL: ${{secrets.DATABASE_URL}}
