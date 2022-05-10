@@ -16,9 +16,14 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm run prisma:generate
-      - run: npm run prisma:schema
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Generate resolvers
+        run: npm run prisma:generate
+      - name: Sync database schema with application
+        run: npm run prisma:schema
+      - name: Build application
+        run: npm run webpack
+      - name: Push 'dist' folder to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
         with: 
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "fedora-books-backend"
