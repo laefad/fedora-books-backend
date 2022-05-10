@@ -24,9 +24,13 @@ jobs:
         run: npm run webpack
       - name: Clean up
         working-directory: ./..
-        run: ls | grep -v dist | xargs rm -rfv
+        # run: ls | grep -v dist | xargs rm -rfv
+        run: ls | grep -v ^/?[^/]*/dist/server.js$ | xargs rm -rfv
+      - name: List rest
+        working-directory: ./..
+        run: ls -la
       - name: Init git
-        # working-directory: ./..
+        working-directory: ./..
         run: git init
       - name: Push 'dist' folder to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
