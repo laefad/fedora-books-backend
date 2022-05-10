@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm prisma:generate
-      - run: npm prisma:schema
+      - run: npm run prisma:generate
+      - run: npm run prisma:schema
       - uses: akhileshns/heroku-deploy@v3.12.12
         with: 
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
