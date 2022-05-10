@@ -7,6 +7,7 @@ import { buildSchema } from 'type-graphql';
 
 // import { HelloResolver } from '@/resolvers/hello';
 import { resolvers } from "@/generated";
+import { env } from 'process';
 
 interface Context {
     prisma: PrismaClient;
@@ -33,8 +34,10 @@ async function bootstrap() {
         cors: freeCors,
         context: (): Context => ({ prisma }),
     });
+
+    const port = env.port ?? 3000;
     
-    const { url } = await server.listen(3000);
+    const { url } = await server.listen(port);
     console.log(`Server is running, GraphQL Playground available at ${url}`);
 }
   
