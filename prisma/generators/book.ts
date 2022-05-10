@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateChapters } from "./chapter";
-import { generateWords, getFish, pickMany, random, randomDate } from "./util";
+import { generateChapters } from "@/generators/chapter";
+import { generateWords, getFish, pickMany, random, randomDate } from "@/generators/util";
 
 interface GenerateBooksParams {
     booksAmount: number;

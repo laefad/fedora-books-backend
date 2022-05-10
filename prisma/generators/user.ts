@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateWords } from "./util";
+import { generateWords } from "@/generators/util";
 
 interface GenerateUsersParams {
     amount: number;

@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { getFish } from "./util";
+import { getFish } from "@/generators/util";
 
 interface GenerateParagraphsParams {
     amount: number;

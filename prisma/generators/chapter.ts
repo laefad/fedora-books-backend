@@ -1,6 +1,6 @@
 import type { ChapterType, PrismaClient } from "@prisma/client";
-import { generateParagraphs } from "./paragraph";
-import { generateWords, pick, random } from "./util";
+import { generateParagraphs } from "@/generators/paragraph";
+import { generateWords, pick, random } from "@/generators/util";
 
 interface GenerateChaptersParams {
     amount: number;
@@ -47,7 +47,7 @@ export const generateChapters = async ({
     prisma
 }: GenerateChaptersParams): Promise<string[]> => {
     const chapterTypes: Array<ChapterType>  = ["Default", "Directory"];
-    const type = nested.level.current >= nested.level.max ? "Default" : pick(chapterTypes);
+    const type = nested.level.current >= nested.level.max ? "Default" : pick(chapterTypes) as ChapterType;
 
     const topChapter = nested.level.current > 0 ? { topChapter: { connect: { id: nested.topChapterId } } } : {};
 

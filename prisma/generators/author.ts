@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateWords, getFish } from "./util";
+import { generateWords, getFish } from "@/generators/util";
 
-interface GenerateTagsParams {
+interface GenerateAuthorsParams {
     amount: number;
     length: {
         min: number;
@@ -10,21 +10,21 @@ interface GenerateTagsParams {
     prisma: PrismaClient;
 };
 
-export const generateTags = async ({
+export const generateAuthors = async ({
     amount,
     length,
     prisma
-}: GenerateTagsParams): Promise<string[]> => {
-    const tagIDs: Array<string> = [];
+}: GenerateAuthorsParams): Promise<string[]> => {
+    const authorIDs: Array<string> = [];
     for (let i = 0; i <= amount; i++) {
-        const { id } = await prisma.tag.create({
+        const { id } = await prisma.author.create({
             data: {
                 name: generateWords({length}),
                 description: getFish(),
             }
         });
-        tagIDs.push(id);
+        authorIDs.push(id);
     }
 
-    return tagIDs;
+    return authorIDs;
 };

@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { generateAuthors } from "./seed/author";
-import { generateBooks } from "./seed/book";
-import { generateTags } from "./seed/tag";
-import { generateUsers } from "./seed/user";
-import { generateBookLists } from "./seed/userBookList";
-import { generateUserTags } from "./seed/userTag";
+import { 
+  generateAuthors, 
+  generateBooks,
+  generateTags,
+  generateUsers,
+  generateBookLists,
+  generateUserTags
+} from "@/generators";
 
 const prisma = new PrismaClient();
 

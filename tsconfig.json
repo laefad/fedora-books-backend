@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "module": "commonjs",
         "moduleResolution": "node",
         "strict": true,
         "useDefineForClassFields": true,
@@ -9,6 +8,12 @@
         "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        // "sourceMap": true,
+		// "noImplicitReturns": true,
+		// "noUnusedLocals": true,
+		// "noImplicitOverride": true,
+		// "exactOptionalPropertyTypes": true,
+        "newLine": "lf",
         "lib": [
             "esnext", 
             "esnext.asynciterable"
@@ -22,10 +27,10 @@
             "@/*": ["./src/*"],
             "@/generated": ["./prisma/generated/type-graphql/index.ts"],
             "@/generated/*": ["./prisma/generated/type-graphql/*"],
+            "@/seed": ["./prisma/seed.ts"],
+            "@/generators": ["./prisma/generators/index.ts"],
+            "@/generators/*": ["./prisma/generators/*"]
         }
     },
-    "ts-node": {
-        "require": ["tsconfig-paths/register"]
-    },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "prisma/**/*.ts"],
 }

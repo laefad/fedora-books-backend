@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import { pick, generateWords, getFish } from "./util";
+import { pick, generateWords, getFish } from "@/generators/util";
 
 interface GenerateUserTagsParams {
     amount: number;

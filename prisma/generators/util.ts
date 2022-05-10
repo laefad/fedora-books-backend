@@ -1,5 +1,5 @@
-import { LoremIpsum } from "lorem-ipsum";
-import { rword } from 'rword';
+import { LoremIpsum } from 'lorem-ipsum';
+import { GenerateOptions, rword } from 'rword';
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -32,7 +32,13 @@ export const generateWords = (options: {
         min: number;
         max: number;
     };
-}) => [].concat(rword.generate(
-    options.amount ? random(options.amount.min, options.amount.max) : 1,
-    {length: `${options.length.min}-${options.length.max}`}
-)).join(' ');
+}) => {
+    const words = rword.generate(
+        options.amount ? random(options.amount.min, options.amount.max) : 1,
+        {
+            length: `${options.length.min}-${options.length.max}`
+        }
+    );
+
+    return words instanceof Array ? words.join(' ') : words;
+}; 

@@ -1,10 +1,13 @@
 node_modules
 
 .env
+prod.env
 
 # generated 
 src/generated-schema.graphql
 prisma/generated
+
+dist
 
 # db
 prisma/dev.db
