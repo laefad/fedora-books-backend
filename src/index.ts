@@ -35,7 +35,7 @@ async function bootstrap() {
         context: (): Context => ({ prisma }),
     });
 
-    const port = env.port ?? 3000;
+    const port = env.PORT ?? 3000;
     
     const { url } = await server.listen(port);
     console.log(`Server is running, GraphQL Playground available at ${url}`);
