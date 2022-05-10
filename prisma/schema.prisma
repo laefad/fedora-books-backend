@@ -14,10 +14,11 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId()
-  name     String
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId()
+  name       String
+  coverImage String?
   /// @TypeGraphQL.omit(output: true)
-  password String
+  password   String
 
   bookLists BookList[]
   userTags  UserTag[]
@@ -29,6 +30,7 @@ model Author {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
+  coverImage  String?
 
   books Book[] @relation(fields: [booksIDs], references: [id])
 
