@@ -32,6 +32,16 @@ jobs:
         run: |
           touch Procfile 
           echo "web: node dist/server.js" >> Procfile
+      - name: Create package.json
+        run: |
+          touch package.json
+          echo "{ \
+            "name": "fedora-books-backend", \
+            "version": "1.0.0", \
+            "description": "lets try...", \
+            "main": "web.js", \
+            "author": "laefad" \
+          }" >> package.json
       - name: Init git
         run: git init
       - name: Push builded app to Heroku
