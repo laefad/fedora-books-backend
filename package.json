@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "prisma:generate": "prisma generate --schema prisma/schema.prisma",
-    "prisma:schema": "prisma db push --skip-generate",
+    "prisma:schema": "prisma db push --skip-generate --schema prisma/schema.prisma",
     "clean": "rimraf ./dist",
     "build": "webpack --mode production --stats-error-details",
     "build:dev": "webpack --mode development --stats-error-details",

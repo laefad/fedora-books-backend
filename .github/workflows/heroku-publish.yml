@@ -52,3 +52,4 @@ jobs:
           HD_APOLLO_KEY: ${{secrets.APOLLO_KEY}}
           HD_APOLLO_GRAPH_REF: fedora-books-backend@current
           HD_APOLLO_SCHEMA_REPORTING: true
+          HD_NODE_MODULES_CACHE: false
