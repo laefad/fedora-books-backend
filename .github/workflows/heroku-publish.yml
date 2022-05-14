@@ -22,6 +22,8 @@ jobs:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run build
+      - name: Copy prisma schema to dist
+        run: cp prisma/schema.prisma dist/schema.prisma
       - name: Clean current
         run: ls -A | grep -v dist | xargs rm -rf 
       - name: Create Procfile
