@@ -24,8 +24,11 @@ jobs:
         run: npm run build
       - name: Copy prisma schema to dist
         run: cp prisma/schema.prisma dist/schema.prisma
+      - name: Clean node_modules without prisma
+        working-directory: ./node_modules
+        run: ls -A | grep -v "@prisma\|\.prisma" | xargs rm -rf 
       - name: Clean current
-        run: ls -A | grep -v dist | xargs rm -rf 
+        run: ls -A | grep -v "dist\|node_modules" | xargs rm -rf 
       - name: Create Procfile
         run: |
           touch Procfile 
