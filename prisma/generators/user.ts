@@ -1,5 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
-import { generateWords } from "@/generators/util";
+import { generateWords, pick } from "@/generators/util";
+import { UserRole } from "@/generated";
 
 interface GenerateUsersParams {
     amount: number;
@@ -30,6 +31,7 @@ export const generateUsers = async ({
             data: {
                 name: generateWords({length: name}),
                 password: generateWords({length: password}),
+                role: pick([UserRole.Admin, UserRole.Moderator, UserRole.User]) as UserRole,
             }
         });
         userIDs.push(id);

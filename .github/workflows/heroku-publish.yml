@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - name: Generate resolvers
+      - name: Generate GraphQL code from schema.prisma
         run: npm run prisma:generate
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
@@ -21,13 +21,9 @@ jobs:
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
-        run: npm run webpack
-      - name: List current
-        run: ls -la
+        run: npm run build
       - name: Clean current
         run: ls -A | grep -v dist | xargs rm -rf 
-      - name: List rest
-        run: ls -la
       - name: Create Procfile
         run: |
           touch Procfile 
@@ -38,7 +34,7 @@ jobs:
           echo '{
             "name": "fedora-books-backend",
             "version": "1.0.0",
-            "description": "lets try...",
+            "description": "plug package.json",
             "main": "web.js",
             "author": "laefad"
           }' >> package.json
@@ -51,6 +47,7 @@ jobs:
           heroku_app_name: "fedora-books-backend"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
         env:
+          HD_JWT_KEY: ${{secrets.JWT_KEY}}
           HD_DATABASE_URL: ${{secrets.DATABASE_URL}}
           HD_APOLLO_KEY: ${{secrets.APOLLO_KEY}}
           HD_APOLLO_GRAPH_REF: fedora-books-backend@current

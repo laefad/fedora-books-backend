@@ -1,4 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+// Required for type-graphql
+import 'reflect-metadata';
+
+import { PrismaClient } from '@prisma/client';
 import { 
   generateAuthors, 
   generateBooks,
@@ -6,7 +9,7 @@ import {
   generateUsers,
   generateBookLists,
   generateUserTags
-} from "@/generators";
+} from '@/generators';
 
 const prisma = new PrismaClient();
 

@@ -14,8 +14,9 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId()
   name       String
+  role       UserRole
   coverImage String?
   /// @TypeGraphQL.omit(output: true)
   password   String
@@ -24,6 +25,12 @@ model User {
   userTags  UserTag[]
 
   @@unique([name])
+}
+
+enum UserRole {
+  User
+  Moderator
+  Admin
 }
 
 model Author {

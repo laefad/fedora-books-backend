@@ -1,5 +1,5 @@
 import { LoremIpsum } from 'lorem-ipsum';
-import { GenerateOptions, rword } from 'rword';
+import { rword } from 'rword';
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {

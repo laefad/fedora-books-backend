@@ -2,22 +2,24 @@
 import 'reflect-metadata';
 
 import { ApolloServer, CorsOptions } from 'apollo-server';
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 import { buildSchema } from 'type-graphql';
 
-// import { HelloResolver } from '@/resolvers/hello';
-import { resolvers } from "@/generated";
+import type { Context } from '@/types';
+import { UserLoginResolver } from '@/resolvers';
+import { enhance } from '@/enhance';
+import { customAuthChecker } from '@/utils';
+import { resolvers } from '@/generated';
 import { env } from 'process';
 
-interface Context {
-    prisma: PrismaClient;
-}
-
 async function bootstrap() {
+
+    enhance();
+
     const schema = await buildSchema({
-        // resolvers: [HelloResolver],
-        resolvers,
+        resolvers: [...resolvers, UserLoginResolver],
         validate: false,
+        authChecker: customAuthChecker,
     });
 
     const freeCors: CorsOptions = {
@@ -32,11 +34,14 @@ async function bootstrap() {
     const server = new ApolloServer({ 
         schema,
         cors: freeCors,
-        context: (): Context => ({ prisma }),
+        context: ({req}): Context => ({ 
+            prisma,
+            token: req.headers?.authorization?.split(' ')[1] ?? ''
+        }),
     });
 
     const port = env.PORT ?? 3000;
-    
+
     const { url } = await server.listen(port);
     console.log(`Server is running, GraphQL Playground available at ${url}`);
 }

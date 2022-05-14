@@ -5,12 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "prisma:generate": "prisma generate",
-    "prisma:seed": "ts-node --transpile-only ./prisma/seed.ts",
     "prisma:schema": "prisma db push --skip-generate",
     "clean": "rimraf ./dist",
-    "webpack": "webpack --mode production --stats-error-details",
-    "webpack:dev": "webpack --mode development --stats-error-details",
-    "webpack:server": "webpack --mode development --watch",
+    "build": "webpack --mode production --stats-error-details",
+    "build:dev": "webpack --mode development --stats-error-details",
     "seed": "node ./dist/seed.js",
     "server": "node ./dist/server.js",
     "start": "npm run prisma:generate && npm run prisma:schema && npm run webpack && npm run server"
@@ -22,6 +20,7 @@
     "apollo-server": "^3.6.7",
     "class-validator": "^0.13.2",
     "graphql": "^15.8.0",
+    "jsonwebtoken": "^8.5.1",
     "lorem-ipsum": "^2.0.4",
     "reflect-metadata": "^0.1.13",
     "rword": "^3.2.1",
@@ -29,6 +28,7 @@
     "typegraphql-prisma": "^0.20.1"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.31",
     "@types/webpack": "^5.28.0",
     "prisma": "^3.12.0",
