@@ -41,7 +41,10 @@ jobs:
             "version": "1.0.0",
             "description": "plug package.json",
             "main": "web.js",
-            "author": "laefad"
+            "author": "laefad",
+            "dependencies" : {
+              "@prisma/client": "^3.14.0"
+            }
           }' >> package.json
       - name: Init git
         run: git init
@@ -58,5 +61,3 @@ jobs:
           HD_APOLLO_GRAPH_REF: fedora-books-backend@current
           HD_APOLLO_SCHEMA_REPORTING: true
           HD_NODE_MODULES_CACHE: false
-          HD_SKIP_NODE_MODULES_CHECK: false
-          HD_NPM_CONFIG_PRODUCTION: false
