@@ -22,32 +22,12 @@ jobs:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run build
-      - name: Copy prisma schema to dist
-        run: cp prisma/schema.prisma dist/schema.prisma
-      - name: Clean node_modules without prisma
-        working-directory: ./node_modules
-        run: ls -A | grep -v "@prisma\|\.prisma" | xargs rm -rf 
-      - name: Clean current
-        run: ls -A | grep -v "dist\|node_modules" | xargs rm -rf 
+      - name: delete .gitignore
+        run: rm .gitignore
       - name: Create Procfile
         run: |
           touch Procfile 
           echo "web: node dist/server.js" >> Procfile
-      - name: Create package.json
-        run: |
-          touch package.json
-          echo '{
-            "name": "fedora-books-backend",
-            "version": "1.0.0",
-            "description": "plug package.json",
-            "main": "web.js",
-            "author": "laefad",
-            "dependencies" : {
-              "@prisma/client": "^3.14.0"
-            }
-          }' >> package.json
-      - name: Init git
-        run: git init
       - name: Push builded app to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with: 
