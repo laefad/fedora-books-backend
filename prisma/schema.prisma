@@ -16,7 +16,8 @@ datasource db {
 model User {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId()
   name       String
-  role       UserRole
+  /// @TypeGraphQL.omit(input: ["create"])
+  role       UserRole @default(User)
   coverImage String?
   /// @TypeGraphQL.omit(output: true)
   password   String
