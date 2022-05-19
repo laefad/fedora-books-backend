@@ -32,5 +32,5 @@
             "@/generators/*": ["./prisma/generators/*"]
         }
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "prisma/**/*.ts", "src/global.d.ts"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "prisma/**/*.ts", "scripts/**/*.ts", "src/global.d.ts"],
 }

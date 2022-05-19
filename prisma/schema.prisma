@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId()
-  name       String
+  name       String   @unique
   /// @TypeGraphQL.omit(input: ["create"])
   role       UserRole @default(User)
   coverImage String?
@@ -24,8 +24,6 @@ model User {
 
   bookLists BookList[]
   userTags  UserTag[]
-
-  @@unique([name])
 }
 
 enum UserRole {
@@ -44,8 +42,6 @@ model Author {
 
   /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
-
-  @@unique([name])
 }
 
 model UserTag {
@@ -60,8 +56,6 @@ model UserTag {
   booksIDs String[] @db.ObjectId
   /// @TypeGraphQL.omit(output: true, input: true)
   userId   String   @db.ObjectId
-
-  @@unique([name])
 }
 
 model Tag {
@@ -73,8 +67,6 @@ model Tag {
 
   /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
-
-  @@unique([name])
 }
 
 model Book {
@@ -98,13 +90,12 @@ model Book {
   tagIDs      String[] @db.ObjectId
   /// @TypeGraphQL.omit(output: true, input: true)
   userTagIDs  String[] @db.ObjectId
-
-  @@unique([name])
 }
 
 model BookList {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  coverImage  String?
   description String?
 
   user  User   @relation(fields: [userID], references: [id])
@@ -114,8 +105,6 @@ model BookList {
   userID   String   @db.ObjectId
   /// @TypeGraphQL.omit(output: true, input: true)
   booksIDs String[] @db.ObjectId
-
-  @@unique([name])
 }
 
 enum AlignType {
@@ -151,8 +140,12 @@ model Chapter {
   paragraphs Paragraph[]
 
   nestedChapters Chapter[] @relation("nestedChapters")
-  topChapter     Chapter?  @relation("nestedChapters", fields: [topChapterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  top            Chapter?  @relation("nestedChapters", fields: [topChapterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  next           Chapter?  @relation("NextPrevChapter")
+  prev           Chapter?  @relation("NextPrevChapter", fields: [prevId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
+  /// @TypeGraphQL.omit(output: true, input: true)
+  prevId       String? @db.ObjectId
   /// @TypeGraphQL.omit(output: true, input: true)
   topChapterId String? @db.ObjectId
   /// @TypeGraphQL.omit(output: true, input: true)

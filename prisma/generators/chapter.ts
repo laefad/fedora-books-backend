@@ -33,9 +33,15 @@ interface GenerateChaptersParams {
         min: number;
         max: number;
     };
+    prevChapterId?: string;
     bookId: string;
     prisma: PrismaClient;
 };
+
+interface GenerateChaptersOutput {
+    chapterIDs: string[];
+    prevChapterId?: string;
+}
 
 export const generateChapters = async ({
     amount,
@@ -44,12 +50,19 @@ export const generateChapters = async ({
     nameWords,
     paragraphs,
     bookId,
+    prevChapterId,
     prisma
-}: GenerateChaptersParams): Promise<string[]> => {
+}: GenerateChaptersParams): Promise<GenerateChaptersOutput> => {
     const chapterTypes: Array<ChapterType>  = ["Default", "Directory"];
     const type = nested.level.current >= nested.level.max ? "Default" : pick(chapterTypes) as ChapterType;
 
-    const topChapter = nested.level.current > 0 ? { topChapter: { connect: { id: nested.topChapterId } } } : {};
+    const top = nested.level.current > 0 ? { top: { connect: { id: nested.topChapterId } } } : {};
+    let prev = () => 
+        type == "Default"
+        ? prevChapterId != null
+            ? { prev: { connect: { id: prevChapterId } } } 
+            : {}
+        : {};
 
     const chapterIDs: Array<string> = [];
     for (let i = 0; i <= amount; i++) {
@@ -60,7 +73,8 @@ export const generateChapters = async ({
             data: {
                 name: generateWords(nameWords),
                 type,
-                ...topChapter,
+                ...top,
+                ...prev(),
                 book: { 
                     connect: { 
                         id: bookId 
@@ -70,7 +84,7 @@ export const generateChapters = async ({
         });
 
         if (type == "Directory") {
-            await generateChapters({
+            prevChapterId = (await generateChapters({
                 amount: random(chapters.min, chapters.max),
                 chapters,
                 nested: {
@@ -84,18 +98,23 @@ export const generateChapters = async ({
                 paragraphs,
                 nameWords,
                 bookId,
+                prevChapterId,
                 prisma
-            });
+            })).prevChapterId;
         } else {
             await generateParagraphs({
                 chapterId: id,
                 amount: random(paragraphs.min, paragraphs.max),
                 prisma
             });
+            prevChapterId = id;
         }
 
         chapterIDs.push(id);
     }
 
-    return chapterIDs;
+    return {
+        chapterIDs, 
+        prevChapterId
+    };
 };
