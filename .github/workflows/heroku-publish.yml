@@ -20,6 +20,10 @@ jobs:
         run: npm run prisma:schema
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
+      - name: Fix database schema indexes
+        run: npm run fix:index
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Build application
         run: npm run build
       - name: delete .gitignore
